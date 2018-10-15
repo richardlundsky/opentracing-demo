@@ -26,11 +26,6 @@ repositories {
 
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
-	// THIS WILL AUTO-CONFIGURE INSTRUMENTATION OF ALL SPRING BOOT REST CONTROLLERS AND RESTTEMPLATE BEANS
-	implementation 'io.opentracing.contrib:opentracing-spring-web-autoconfigure:0.3.2'
-	// THIS WILL PROVIDE JAEGER-SPECIFIC OPEN-TRACING COMPONENTS
-	implementation 'io.jaegertracing:jaeger-client:0.31.0'
-	
 	
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
