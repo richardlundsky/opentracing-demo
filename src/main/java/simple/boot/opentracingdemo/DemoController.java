@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 public class DemoController {
 
@@ -23,22 +20,15 @@ public class DemoController {
     @RequestMapping("/microservice2")
     //The method name is what the span will be named by default
     public String microservice2() {
-        return "Baggage Items received in MicroService2:"+getBaggageItems();
+        return "Response from Microservice2";
     }
 
-    @RequestMapping("/microservice1/{transactionId}")
+    @RequestMapping("/microservice1/{customerId}")
     //The method name is what the span will be named by default
-    public String microservice1(@PathVariable("transactionId") String transactionId) {
-        jaegerTracer.activeSpan().setTag("transactionIdTag", transactionId);
-        jaegerTracer.activeSpan().setBaggageItem("transactionIdBaggage", transactionId);
+    public String microservice1(@PathVariable("customerId") String customerId) {
+        jaegerTracer.activeSpan().setTag("customerId", customerId);
         ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8080/microservice2", String.class);
         return "Information I got from MicroService2:" + response.getBody();
     }
 
-    private Map<String,String> getBaggageItems() {
-        Map<String,String> map = new HashMap<>();
-        Iterable<Map.Entry<String, String>> entries = jaegerTracer.activeSpan().context().baggageItems();
-        entries.forEach(e -> map.put(e.getKey(), e.getValue()));
-        return map;
-    }
 }
