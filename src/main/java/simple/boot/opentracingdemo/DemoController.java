@@ -28,7 +28,6 @@ public class DemoController {
     public String microservice1(@PathVariable("customerId") String customerId) {
         jaegerTracer.activeSpan().setTag("customerId", customerId);
         ResponseEntity<String> response = restTemplate.getForEntity("http://localhost:8080/microservice2", String.class);
-        return "Information I got from MicroService2:" + response.getBody();
+        return "Information I got from MicroService2: <br><br>" + response.getBody();
     }
-
 }
