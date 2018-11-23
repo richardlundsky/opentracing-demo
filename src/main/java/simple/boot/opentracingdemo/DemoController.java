@@ -20,7 +20,9 @@ public class DemoController {
     @RequestMapping("/microservice2")
     //The method name is what the span will be named by default
     public String microservice2() {
-        return "Response from Microservice2";
+        jaegerTracer.activeSpan().log("I'm about to break!");
+        restTemplate.getForEntity("http://some.nonexistent.url", String.class);
+        return "Should never get here!";
     }
 
     @RequestMapping("/microservice1/{customerId}")
