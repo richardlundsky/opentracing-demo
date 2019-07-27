@@ -4,9 +4,11 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		gradlePluginPortal()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'com.bmuschko:gradle-docker-plugin:4.10.0'
 	}
 }
 
@@ -14,6 +16,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.bmuschko.docker-spring-boot-application'
 
 group = 'simple.boot'
 version = '0.0.1-SNAPSHOT'
@@ -28,4 +31,13 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+docker {
+	springBootApplication {
+		baseImage = 'openjdk:8-alpine'
+		ports = [9090, 8080]
+		tag = 'springboot-test:1.0'
+		jvmArgs = ['-Dspring.profiles.active=production', '-Xmx2048m']
+	}
 }
